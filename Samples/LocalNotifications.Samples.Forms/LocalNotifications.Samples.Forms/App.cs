@@ -19,10 +19,29 @@ namespace LocalNotifications.Samples.Forms
                 {
                     VerticalOptions = LayoutOptions.Center,
                     Children = {
-						new Label {
-							XAlign = TextAlignment.Center,
-							Text = "Welcome to Xamarin Forms!"
-						}
+                        new Label {
+                            XAlign = TextAlignment.Center,
+                            Text = "Welcome to Xamarin Forms!"
+                        },
+                        new Button{
+                             Text = "Fire",
+                              Command = new Command(()=>{ 
+                                    var notifier = CrossLocalNotifications.Instance;
+                                    notifier.Notify(
+                                        new LocalNotification()
+                                        {
+                                            Title = "Title",
+                                            Text = "Text",
+                                            Id = 1,
+                                            NotifyTime = DateTime.Now.AddSeconds(10),
+                                        },
+                                        (LocalNotification localNotification)=>{
+                                            Device.BeginInvokeOnMainThread(async () => {
+                                                await App.Current.MainPage.DisplayAlert(localNotification.Title, localNotification.Text, "OK");
+                                            });
+                                        });
+                              })
+                        }
 					}
                 }
             };
@@ -30,15 +49,7 @@ namespace LocalNotifications.Samples.Forms
 
         protected override void OnStart()
         {
-            // Handle when your app starts
-            var notifier = CrossLocalNotifications.CreateLocalNotifier();
-            notifier.Notify(new LocalNotification()
-            {
-                Title = "Title",
-                Text = "Text",
-                Id = 1,
-                NotifyTime = DateTime.Now.AddSeconds(10),
-            });
+
         }
 
         protected override void OnSleep()

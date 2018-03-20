@@ -9,13 +9,11 @@ namespace LocalNotifications.Plugin.Abstractions
     /// </summary>
     public interface ILocalNotifier
     {
-        event RecvNotificationEventHandler RecvNotificationEvent;
-
         /// <summary>
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        void Notify(LocalNotification notification);
+        void Notify(LocalNotification notification, Action<LocalNotification> onNotifyAction = null);
 
         /// <summary>
         /// Cancels the specified notification identifier.
