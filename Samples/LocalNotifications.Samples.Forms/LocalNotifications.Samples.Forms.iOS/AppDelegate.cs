@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using LocalNotifications.Plugin;
+using LocalNotifications.Plugin.Abstractions;
 using UIKit;
 
 namespace LocalNotifications.Samples.Forms.iOS
@@ -30,5 +32,12 @@ namespace LocalNotifications.Samples.Forms.iOS
 
             return base.FinishedLaunching(app, options);
         }
+
+        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        {
+            var notifier = (LocalNotifier)CrossLocalNotifications.Instance();
+            notifier.Recv(new LocalNotification() { Text = notification.AlertBody, Title = notification.AlertTitle  });
+        }
+
     }
 }

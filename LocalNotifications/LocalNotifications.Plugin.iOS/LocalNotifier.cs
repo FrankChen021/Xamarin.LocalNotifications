@@ -14,47 +14,56 @@ namespace LocalNotifications.Plugin
     /// Implementation of ILocalNotifier for iOS
     /// </summary>
     public class LocalNotifier : ILocalNotifier
-  {
-      private const string NotificationKey = "LocalNotificationKey";
+    {
+        private const string NotificationKey = "LocalNotificationKey";
 
-      /// <summary>
-      /// Notifies the specified notification.
-      /// </summary>
-      /// <param name="notification">The notification.</param>
-      public void Notify(LocalNotification notification)
-      {
-          var nativeNotification = createNativeNotification(notification);
-          
-          UIApplication.SharedApplication.ScheduleLocalNotification(nativeNotification);
-      }
+        public event RecvNotificationEventHandler RecvNotificationEvent;
 
-      /// <summary>
-      /// Cancels the specified notification identifier.
-      /// </summary>
-      /// <param name="notificationId">The notification identifier.</param>
-      public void Cancel(int notificationId)
-      {
-          var notifications = UIApplication.SharedApplication.ScheduledLocalNotifications;
-          var notification = notifications.Where(n => n.UserInfo.ContainsKey(NSObject.FromObject(NotificationKey)))
-              .FirstOrDefault(n => n.UserInfo[NotificationKey].Equals(NSObject.FromObject(notificationId)));
+        /// <summary>
+        /// Notifies the specified notification.
+        /// </summary>
+        /// <param name="notification">The notification.</param>
+        public void Notify(LocalNotification notification)
+        {
+            var nativeNotification = createNativeNotification(notification);
 
-          if (notification != null)
-          {
-              UIApplication.SharedApplication.CancelLocalNotification(notification);
-          }
-      }
+            UIApplication.SharedApplication.ScheduleLocalNotification(nativeNotification);
+        }
 
-      private UILocalNotification createNativeNotification(LocalNotification notification)
-      {
-          var nativeNotification = new UILocalNotification
-          {
-              AlertAction = notification.Title,
-              AlertBody = notification.Text,
-              FireDate = notification.NotifyTime.ToNSDate(),
-              UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(notification.Id), NSObject.FromObject(NotificationKey))
-          };
+        /// <summary>
+        /// Cancels the specified notification identifier.
+        /// </summary>
+        /// <param name="notificationId">The notification identifier.</param>
+        public void Cancel(int notificationId)
+        {
+            var notifications = UIApplication.SharedApplication.ScheduledLocalNotifications;
+            var notification = notifications.Where(n => n.UserInfo.ContainsKey(NSObject.FromObject(NotificationKey)))
+                .FirstOrDefault(n => n.UserInfo[NotificationKey].Equals(NSObject.FromObject(notificationId)));
 
-          return nativeNotification;
-      }
-  }
+            if (notification != null)
+            {
+                UIApplication.SharedApplication.CancelLocalNotification(notification);
+            }
+        }
+
+        private UILocalNotification createNativeNotification(LocalNotification notification)
+        {
+            var nativeNotification = new UILocalNotification
+            {
+                AlertAction = notification.Title,
+                AlertBody = notification.Text,
+                FireDate = notification.NotifyTime.ToNSDate(),
+                ApplicationIconBadgeNumber = 1,
+                UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(notification.Id), NSObject.FromObject(NotificationKey))
+            };
+
+            return nativeNotification;
+        }
+
+        public void Recv(LocalNotification localNotification)
+        {
+            if (this.RecvNotificationEvent != null)
+                this.RecvNotificationEvent(localNotification);
+        }
+    }
 }
