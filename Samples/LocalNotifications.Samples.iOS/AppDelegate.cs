@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using LocalNotifications.Plugin;
 using UIKit;
 
 namespace LocalNotifications.Samples.iOS
@@ -26,6 +27,11 @@ namespace LocalNotifications.Samples.iOS
             UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
 
             return true;
+        }
+
+        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        {
+            (CrossLocalNotifications.Instance as LocalNotifier).Recv(notification);
         }
 
         public override void OnResignActivation(UIApplication application)

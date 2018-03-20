@@ -73,7 +73,7 @@ namespace LocalNotifications.Plugin
             if ( notifyActions.TryGetValue(id, out action) )
             {
                 notifyActions.Remove(id);
-                action(new LocalNotification() { Text = notification.AlertBody, Title = notification.AlertTitle });
+                action(new LocalNotification() { Text = notification.AlertBody, Title = notification.AlertAction });
             }
         }
     }
