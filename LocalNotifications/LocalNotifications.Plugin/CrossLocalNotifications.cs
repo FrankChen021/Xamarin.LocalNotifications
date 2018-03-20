@@ -14,9 +14,14 @@ namespace LocalNotifications.Plugin
         /// Creates the local notifier.
         /// </summary>
         /// <returns></returns>
-        public static ILocalNotifier Instance()
+        public static ILocalNotifier Instance
         {
-            return lazy.Value;
+            get
+            {
+                if (lazy.Value == null)
+                    NotImplementedInReferenceAssembly();
+                return lazy.Value;
+            }
         }
 
         /// <summary>
