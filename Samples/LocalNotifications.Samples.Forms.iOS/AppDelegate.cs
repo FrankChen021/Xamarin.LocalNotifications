@@ -35,9 +35,6 @@ namespace LocalNotifications.Samples.Forms.iOS
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            var notifier = (LocalNotifier)CrossLocalNotifications.Instance;
-            notifier.Recv(notification);
         }
-
     }
 }
