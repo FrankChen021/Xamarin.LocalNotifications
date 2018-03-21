@@ -83,5 +83,10 @@ namespace LocalNotifications.Plugin
           var utcAlarmTimeInMillis = (notifyTime.ToUniversalTime() - DateTime.UtcNow).TotalMilliseconds;
           return (long)utcAlarmTimeInMillis;
       }
-  }
+
+        public void CancelAll()
+        {
+            getNotificationManager().CancelAll();
+        }
+    }
 }

@@ -17,14 +17,16 @@ namespace LocalNotifications.Samples.iOS
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
 
-            var notifier = CrossLocalNotifications.CreateLocalNotifier();
-            notifier.Notify(new LocalNotification()
-            {
-                Title = "Title",
-                Text = "Text",
-                Id = 1,
-                NotifyTime = DateTime.Now.AddSeconds(10),
-            });
+            new LocalNotifier().
+                Notify(
+                    new LocalNotification()
+                    {
+                        Title = "Title",
+                        Text = "Text",
+                        Id = 1,
+                        NotifyTime = DateTime.Now.AddSeconds(10),
+                    }
+                );
         }
     }
 }
