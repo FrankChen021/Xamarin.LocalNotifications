@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
-using LocalNotifications.Plugin;
-using LocalNotifications.Plugin.Abstractions;
 using UIKit;
 
 namespace LocalNotifications.Samples.Forms.iOS
@@ -35,6 +33,17 @@ namespace LocalNotifications.Samples.Forms.iOS
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
+            if (application.ApplicationState == UIApplicationState.Active)
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread(() =>
+                {
+                    var alert = new UIAlertView();
+                    alert.Title = "NOTIFICATION RECV";
+                    alert.Message = notification.AlertBody;
+                    alert.AddButton("OK");
+                    alert.Show();
+                });
+            }
         }
     }
 }
