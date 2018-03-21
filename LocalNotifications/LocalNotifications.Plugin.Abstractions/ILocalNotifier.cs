@@ -11,14 +11,18 @@ namespace LocalNotifications.Plugin.Abstractions
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        void Notify(LocalNotification notification);
+        /// <returns>object used to cancel this notification</returns>
+        object Notify(LocalNotification notification);
 
         /// <summary>
         /// Cancels the specified notification identifier.
         /// </summary>
         /// <param name="notificationId">The notification identifier.</param>
-        void Cancel(int notificationId);
+        void Cancel(object notificationId);
 
+        /// <summary>
+        /// cancel all notifications sent by current app
+        /// </summary>
         void CancelAll();
     }
 }

@@ -3,13 +3,8 @@ using LocalNotifications.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-#if __UNIFIED__
 using UIKit;
 using Foundation;
-#else
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-#endif
 
 namespace LocalNotifications.Plugin
 {
@@ -24,22 +19,36 @@ namespace LocalNotifications.Plugin
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        public void Notify(LocalNotification notification)
+        public object Notify(LocalNotification notification)
         {
-            var nativeNotification = CreateNativeNotification(notification);
+            var id = Guid.NewGuid().ToString();
+            var nativeNotification = new UILocalNotification
+            {
+                AlertAction = notification.Title,
+                AlertBody = notification.Text,
+                FireDate = notification.NotifyTime.ToNSDate(),
+                //ApplicationIconBadgeNumber = 1,
+                UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(id), NSObject.FromObject(NotificationKey))
+            }; ;
 
             UIApplication.SharedApplication.ScheduleLocalNotification(nativeNotification);
+
+            return id;
         }
 
         /// <summary>
         /// Cancels the specified notification identifier.
         /// </summary>
         /// <param name="notificationId">The notification identifier.</param>
-        public void Cancel(int notificationId)
+        public void Cancel(object notificationId)
         {
+            var id = notificationId as string;
+            if (string.IsNullOrEmpty(id))
+                return;
+
             var notifications = UIApplication.SharedApplication.ScheduledLocalNotifications;
             var notification = notifications.Where(n => n.UserInfo.ContainsKey(NSObject.FromObject(NotificationKey)))
-                .FirstOrDefault(n => n.UserInfo[NotificationKey].Equals(NSObject.FromObject(notificationId)));
+                .FirstOrDefault(n => n.UserInfo[NotificationKey].Equals(NSObject.FromObject(id)));
 
             if (notification != null)
             {
@@ -47,20 +56,9 @@ namespace LocalNotifications.Plugin
             }
         }
 
-        private UILocalNotification CreateNativeNotification(LocalNotification notification)
-        {
-            var nativeNotification = new UILocalNotification
-            {
-                AlertAction = notification.Title,
-                AlertBody = notification.Text,
-                FireDate = notification.NotifyTime.ToNSDate(),
-                //ApplicationIconBadgeNumber = 1,
-                UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(notification.Id), NSObject.FromObject(NotificationKey))
-            };
-
-            return nativeNotification;
-        }
-
+        /// <summary>
+        /// cancel all notifications
+        /// </summary>
         public void CancelAll()
         {
             UIApplication.SharedApplication.CancelAllLocalNotifications();

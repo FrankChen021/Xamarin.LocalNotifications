@@ -11,79 +11,96 @@ namespace LocalNotifications.Plugin
     /// <summary>
     /// Implementation of ILocalNotifier for Android
     /// </summary>
-  public class LocalNotifier : ILocalNotifier
-  {
-      /// <summary>
-      /// Notifies the specified notification.
-      /// </summary>
-      /// <param name="notification">The notification.</param>
-      public void Notify(LocalNotification notification)
-      {
-          var intent = createIntent(notification.Id);
-          
-          var serializedNotification = serializeNotification(notification);
-          intent.PutExtra(ScheduledAlarmHandler.LocalNotificationKey, serializedNotification);
+    public class LocalNotifier : ILocalNotifier
+    {
+        static int staticId;
 
-          var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, intent, PendingIntentFlags.CancelCurrent);
-          var triggerTime = notifyTimeInMilliseconds(notification.NotifyTime);
-          var alarmManager = getAlarmManager();
+        /// <summary>
+        /// Notifies the specified notification.
+        /// </summary>
+        /// <param name="notification">The notification.</param>
+        public object Notify(LocalNotification notification)
+        {
+            var id = staticId++;
+            var intent = createIntent(id);
 
-          alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + triggerTime, pendingIntent);
-      }
+            var serializedNotification = serializeNotification(new NativeNotification()
+            {
+                Id = id,
+                NotifyTime = notification.NotifyTime,
+                Text = notification.Text,
+                Title = notification.Title
+            });
+            intent.PutExtra(ScheduledAlarmHandler.LocalNotificationKey, serializedNotification);
 
-      /// <summary>
-      /// Cancels the specified notification identifier.
-      /// </summary>
-      /// <param name="notificationId">The notification identifier.</param>
-      public void Cancel(int notificationId)
-      {
-          var intent = createIntent(notificationId);
-          var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, intent, PendingIntentFlags.CancelCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, intent, PendingIntentFlags.CancelCurrent);
+            var triggerTime = notifyTimeInMilliseconds(notification.NotifyTime);
+            var alarmManager = getAlarmManager();
 
-          var alarmManager = getAlarmManager();
-          alarmManager.Cancel(pendingIntent);
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + triggerTime, pendingIntent);
 
-          var notificationManager = getNotificationManager();
-          notificationManager.Cancel(notificationId);
-      }
+            return id;
+        }
 
-      private Intent createIntent(int notificationId)
-      {
-          return new Intent(Application.Context, typeof (ScheduledAlarmHandler));
-      }
+        /// <summary>
+        /// Cancels the specified notification identifier.
+        /// </summary>
+        /// <param name="notificationId">The notification identifier.</param>
+        public void Cancel(object notificationId)
+        {
+            if (notificationId.GetType() != typeof(int))
+                return;
 
-      private NotificationManager getNotificationManager()
-      {
-          var notificationManager = Application.Context.GetSystemService(Context.NotificationService) as NotificationManager;
-          return notificationManager;
-      }
+            int id = (int)notificationId;
+            var intent = createIntent(id);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, intent, PendingIntentFlags.CancelCurrent);
 
-      private AlarmManager getAlarmManager()
-      {
-          var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-          return alarmManager;
-      }
+            var alarmManager = getAlarmManager();
+            alarmManager.Cancel(pendingIntent);
 
-      private string serializeNotification(LocalNotification notification)
-      {
-          var xmlSerializer = new XmlSerializer(notification.GetType());
-          using (var stringWriter = new StringWriter())
-          {
-              xmlSerializer.Serialize(stringWriter, notification);
-              return stringWriter.ToString();
-          }
-      }
+            getNotificationManager().Cancel(id);
+        }
 
-      private long notifyTimeInMilliseconds(DateTime notifyTime)
-      {
-          //var utcTime = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
-          //var epochDifference = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
+        private Intent createIntent(int notificationId)
+        {
+            return new Intent(Application.Context, typeof(ScheduledAlarmHandler));
+        }
 
-          //var utcAlarmTimeInMillis = utcTime.AddSeconds(-epochDifference).Ticks / 10000;
-          var utcAlarmTimeInMillis = (notifyTime.ToUniversalTime() - DateTime.UtcNow).TotalMilliseconds;
-          return (long)utcAlarmTimeInMillis;
-      }
+        private NotificationManager getNotificationManager()
+        {
+            var notificationManager = Application.Context.GetSystemService(Context.NotificationService) as NotificationManager;
+            return notificationManager;
+        }
 
+        private AlarmManager getAlarmManager()
+        {
+            var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
+            return alarmManager;
+        }
+
+        private string serializeNotification(NativeNotification notification)
+        {
+            var xmlSerializer = new XmlSerializer(notification.GetType());
+            using (var stringWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(stringWriter, notification);
+                return stringWriter.ToString();
+            }
+        }
+
+        private long notifyTimeInMilliseconds(DateTime notifyTime)
+        {
+            //var utcTime = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
+            //var epochDifference = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
+
+            //var utcAlarmTimeInMillis = utcTime.AddSeconds(-epochDifference).Ticks / 10000;
+            var utcAlarmTimeInMillis = (notifyTime.ToUniversalTime() - DateTime.UtcNow).TotalMilliseconds;
+            return (long)utcAlarmTimeInMillis;
+        }
+
+        /// <summary>
+        /// cancel all notifications
+        /// </summary>
         public void CancelAll()
         {
             getNotificationManager().CancelAll();

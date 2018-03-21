@@ -54,27 +54,33 @@ namespace LocalNotifications.Plugin
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        public void Notify(LocalNotification notification)
+        public object Notify(LocalNotification notification)
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/send-local-toast
 
+            string id = Guid.NewGuid().ToString();
             titleElem.InnerText = notification.Title;
             contentElem.InnerText = notification.Text;
 
             notifier.AddToSchedule(new ScheduledToastNotification(toastXml, notification.NotifyTime)
             {
-                Id = notification.Id.ToString()
+                Id = id
             });
+
+            return id;
         }
 
         /// <summary>
         /// Cancels the specified notification identifier.
         /// </summary>
         /// <param name="notificationId">The notification identifier.</param>
-        public void Cancel(int notificationId) 
+        public void Cancel(object notificationId) 
         {
-            string id = notificationId.ToString();
-            foreach(var n in notifier.GetScheduledToastNotifications())
+            string id = notificationId as string;
+            if ( string.IsNullOrEmpty(id) )
+                return;
+
+            foreach (var n in notifier.GetScheduledToastNotifications())
             {
                 if (n.Id == id)
                 {

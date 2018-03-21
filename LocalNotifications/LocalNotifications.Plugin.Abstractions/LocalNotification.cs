@@ -8,14 +8,6 @@ namespace LocalNotifications.Plugin.Abstractions
     public class LocalNotification
     {
         /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        /// <value>
-        /// Notification identifier used for canceling not scheduled notification
-        /// </value>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the notification title.
         /// </summary>
         /// <value>

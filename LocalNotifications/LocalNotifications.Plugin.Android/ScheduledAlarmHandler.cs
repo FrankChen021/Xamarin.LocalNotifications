@@ -9,20 +9,25 @@ using LocalNotifications.Plugin.Abstractions;
 
 namespace LocalNotifications.Plugin
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [BroadcastReceiver]
     public class ScheduledAlarmHandler : BroadcastReceiver
     {
-        public const string LocalNotificationKey = "LocalNotification";
+        internal const string LocalNotificationKey = "LocalNotification";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="intent"></param>
         public override void OnReceive(Context context, Intent intent)
         {
             var extra = intent.GetStringExtra(LocalNotificationKey);
-            var notification = serializeFromString(extra);
+            var notification = deserializeFromString(extra);
 
-            var nativeNotification = createNativeNotification(notification);
-            var manager = getNotificationManager();
-
-            manager.Notify(notification.Id, nativeNotification);
+            getNotificationManager().Notify(notification.Id, createNativeNotification(notification));
         }
 
         private NotificationManager getNotificationManager()
@@ -43,12 +48,12 @@ namespace LocalNotifications.Plugin
             return nativeNotification;
         }
 
-        private LocalNotification serializeFromString(string notificationString)
+        private NativeNotification deserializeFromString(string notificationString)
         {
-            var xmlSerializer = new XmlSerializer(typeof(LocalNotification));
+            var xmlSerializer = new XmlSerializer(typeof(NativeNotification));
             using (var stringReader = new StringReader(notificationString))
             {
-                var notification = (LocalNotification)xmlSerializer.Deserialize(stringReader);
+                var notification = (NativeNotification)xmlSerializer.Deserialize(stringReader);
                 return notification;
             }
         }
