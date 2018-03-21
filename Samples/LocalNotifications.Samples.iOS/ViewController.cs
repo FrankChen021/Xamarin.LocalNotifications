@@ -23,7 +23,7 @@ namespace LocalNotifications.Samples.iOS
                     {
                         Title = "Title",
                         Text = "Text",
-                        NotifyTime = DateTime.Now.AddSeconds(10),
+                        NotifyTime = DateTime.Now.AddSeconds(5),
                     }
                 );
         }

@@ -12,6 +12,12 @@ namespace LocalNotifications.Samples.Forms
     {
         public App()
         {
+            Label info = new Label
+            {
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Welcome to Xamarin Forms!"
+            };
+
             // The root page of your application
             MainPage = new ContentPage
             {
@@ -19,25 +25,28 @@ namespace LocalNotifications.Samples.Forms
                 {
                     VerticalOptions = LayoutOptions.Center,
                     Children = {
-                        new Label {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
+                        info,
+                        new Button{
+                             Text = "Notify in 5 Seconds",
+                              Command = new Command(()=>{
+                                var notifier = LocalNotifications.Plugin.CrossLocalNotifications.Current;
+                                notifier.Notify(
+                                    new LocalNotification()
+                                    {
+                                        Title = "Title",
+                                        Text = "Text",
+                                        NotifyTime = DateTime.Now.AddSeconds(5),
+                                    });
+                              })
                         },
                         new Button{
-                             Text = "Fire",
-                              Command = new Command(()=>{ 
+                             Text = "Cancel All",
+                              Command = new Command(()=>{
                                     var notifier = LocalNotifications.Plugin.CrossLocalNotifications.Current;
-                                    notifier.Notify(
-                                        new LocalNotification()
-                                        {
-                                            Title = "Title",
-                                            Text = "Text",
-                                            Id = 1,
-                                            NotifyTime = DateTime.Now.AddSeconds(10),
-                                        });
+                                    notifier.CancelAll();
                               })
                         }
-					}
+                    }
                 }
             };
         }

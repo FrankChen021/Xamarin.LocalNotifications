@@ -12,6 +12,7 @@ namespace LocalNotifications.Plugin
     /// </summary>
     public class LocalNotifier : ILocalNotifier
     {
+        static int staticId;
         private ToastNotifier notifier;
         private XmlDocument toastXml;
         private IXmlNode titleElem;
@@ -58,7 +59,7 @@ namespace LocalNotifications.Plugin
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/send-local-toast
 
-            string id = Guid.NewGuid().ToString();
+            string id = (staticId++).ToString();
             titleElem.InnerText = notification.Title;
             contentElem.InnerText = notification.Text;
 
