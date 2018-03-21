@@ -41,9 +41,6 @@
     <Compile Include="..\LocalNotifications.Plugin.iOS\LocalNotifier.cs">
       <Link>LocalNotifier.cs</Link>
     </Compile>
-    <Compile Include="..\LocalNotifications.Plugin\CrossLocalNotifications.cs">
-      <Link>CrossLocalNotifications.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -34,11 +34,6 @@ namespace LocalNotifications.Samples.Forms
                                             Text = "Text",
                                             Id = 1,
                                             NotifyTime = DateTime.Now.AddSeconds(10),
-                                        },
-                                        (LocalNotification localNotification)=>{
-                                            Device.BeginInvokeOnMainThread(async () => {
-                                                await App.Current.MainPage.DisplayAlert(localNotification.Title, localNotification.Text, "OK");
-                                            });
                                         });
                               })
                         }

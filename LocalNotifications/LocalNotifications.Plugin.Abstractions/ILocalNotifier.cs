@@ -11,7 +11,7 @@ namespace LocalNotifications.Plugin.Abstractions
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        void Notify(LocalNotification notification, Action<LocalNotification> onNotifyAction = null);
+        void Notify(LocalNotification notification);
 
         /// <summary>
         /// Cancels the specified notification identifier.

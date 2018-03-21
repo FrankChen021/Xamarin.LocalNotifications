@@ -29,11 +29,6 @@ namespace LocalNotifications.Samples.iOS
             return true;
         }
 
-        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
-        {
-            (CrossLocalNotifications.Instance as LocalNotifier).Recv(notification);
-        }
-
         public override void OnResignActivation(UIApplication application)
         {
             // Invoked when the application is about to move from active to inactive state.

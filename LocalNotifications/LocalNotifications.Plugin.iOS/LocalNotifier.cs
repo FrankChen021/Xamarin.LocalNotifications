@@ -19,17 +19,14 @@ namespace LocalNotifications.Plugin
     public class LocalNotifier : ILocalNotifier
     {
         private const string NotificationKey = "LocalNotificationKey";
-        private IDictionary<int, Action<LocalNotification>> notifyActions = new ConcurrentDictionary<int, Action<LocalNotification>>();
 
         /// <summary>
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        public void Notify(LocalNotification notification, Action<LocalNotification> onNotifyAction)
+        public void Notify(LocalNotification notification)
         {
             var nativeNotification = CreateNativeNotification(notification);
-            if (onNotifyAction != null)
-                notifyActions.Add(notification.Id, onNotifyAction);
 
             UIApplication.SharedApplication.ScheduleLocalNotification(nativeNotification);
         }
@@ -62,19 +59,6 @@ namespace LocalNotifications.Plugin
             };
 
             return nativeNotification;
-        }
-
-        public void Recv(UILocalNotification notification)
-        {
-            NSNumber idValue = (NSNumber)notification.UserInfo[NotificationKey];
-            var id = idValue.Int32Value;
-
-            Action<LocalNotification> action;    
-            if ( notifyActions.TryGetValue(id, out action) )
-            {
-                notifyActions.Remove(id);
-                action(new LocalNotification() { Text = notification.AlertBody, Title = notification.AlertAction });
-            }
         }
     }
 }

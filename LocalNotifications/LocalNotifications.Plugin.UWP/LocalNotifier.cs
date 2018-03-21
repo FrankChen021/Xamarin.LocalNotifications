@@ -55,7 +55,7 @@ namespace LocalNotifications.Plugin
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
-        public void Notify(LocalNotification notification, Action<LocalNotification> onNotifyAction = null)
+        public void Notify(LocalNotification notification)
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/send-local-toast
 
