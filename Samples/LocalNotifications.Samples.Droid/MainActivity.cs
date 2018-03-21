@@ -25,7 +25,7 @@ namespace LocalNotifications.Samples.Droid
 
             button.Click += delegate
             {
-                var notifier = CrossLocalNotifications.CreateLocalNotifier();
+                var notifier = new LocalNotifier();
                 notifier.Notify(new LocalNotification()
                 {
                     Title = "Title",
