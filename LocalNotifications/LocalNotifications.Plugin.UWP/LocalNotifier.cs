@@ -5,7 +5,6 @@ using LocalNotifications.Plugin.Abstractions;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
-[assembly: Xamarin.Forms.Dependency(typeof(LocalNotifier))]
 namespace LocalNotifications.Plugin
 {
     /// <summary>
@@ -82,6 +81,14 @@ namespace LocalNotifications.Plugin
                     notifier.RemoveFromSchedule(n);
                     break;
                 }
+            }
+        }
+
+        public void CancelAll()
+        {
+            foreach (var n in notifier.GetScheduledToastNotifications())
+            {
+                notifier.RemoveFromSchedule(n);
             }
         }
     }

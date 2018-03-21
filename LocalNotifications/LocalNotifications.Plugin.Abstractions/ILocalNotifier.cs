@@ -18,5 +18,7 @@ namespace LocalNotifications.Plugin.Abstractions
         /// </summary>
         /// <param name="notificationId">The notification identifier.</param>
         void Cancel(int notificationId);
+
+        void CancelAll();
     }
 }

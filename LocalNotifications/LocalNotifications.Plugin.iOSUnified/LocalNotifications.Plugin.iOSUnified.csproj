@@ -35,13 +35,12 @@
     <DocumentationFile>bin\iPhone\Release\LocalNotifications.Plugin.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\LocalNotifications.Plugin.iOS\DateTimeExtensions.cs">
-      <Link>DateTimeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\LocalNotifications.Plugin.iOS\LocalNotifier.cs">
-      <Link>LocalNotifier.cs</Link>
-    </Compile>
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="LocalNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+		<Compile Include="..\LocalNotifications.Plugin\CrossLocalNotifications.cs">
+		<Link>CrossLocalNotifications.cs</Link>
+	</Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LocalNotifications.Plugin.Abstractions\LocalNotifications.Plugin.Abstractions.csproj">
