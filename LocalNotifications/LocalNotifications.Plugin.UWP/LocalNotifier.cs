@@ -84,5 +84,13 @@ namespace LocalNotifications.Plugin
                 }
             }
         }
+
+        public void CancelAll()
+        {
+            foreach (var n in notifier.GetScheduledToastNotifications())
+            {
+                notifier.RemoveFromSchedule(n);
+            }
+        }
     }
 }

@@ -60,5 +60,10 @@ namespace LocalNotifications.Plugin
 
             return nativeNotification;
         }
+
+        public void CancelAll()
+        {
+            UIApplication.SharedApplication.CancelAllLocalNotifications();
+        }
     }
 }
