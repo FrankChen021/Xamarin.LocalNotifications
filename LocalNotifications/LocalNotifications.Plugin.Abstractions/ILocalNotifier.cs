@@ -2,8 +2,6 @@
 
 namespace LocalNotifications.Plugin.Abstractions
 {
-    public delegate void RecvNotificationEventHandler(LocalNotification localNotification);
-
     /// <summary>
     /// Interface for LocalNotifier
     /// </summary>
