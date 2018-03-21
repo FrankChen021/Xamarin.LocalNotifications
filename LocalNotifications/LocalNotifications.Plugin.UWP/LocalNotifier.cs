@@ -1,9 +1,11 @@
 using System;
 using System.IO;
+using LocalNotifications.Plugin;
 using LocalNotifications.Plugin.Abstractions;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
+[assembly: Xamarin.Forms.Dependency(typeof(LocalNotifier))]
 namespace LocalNotifications.Plugin
 {
     /// <summary>

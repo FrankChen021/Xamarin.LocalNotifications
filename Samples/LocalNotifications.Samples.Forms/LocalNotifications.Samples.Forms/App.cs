@@ -26,7 +26,7 @@ namespace LocalNotifications.Samples.Forms
                         new Button{
                              Text = "Fire",
                               Command = new Command(()=>{ 
-                                    var notifier = CrossLocalNotifications.Instance;
+                                    var notifier = DependencyService.Get<ILocalNotifier>();
                                     notifier.Notify(
                                         new LocalNotification()
                                         {
