@@ -49,6 +49,9 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduledAlarmHandler.cs" />
+	<Compile Include="..\LocalNotifications.Plugin\CrossLocalNotifications.cs">
+		<Link>CrossLocalNotifications.cs</Link>
+	</Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

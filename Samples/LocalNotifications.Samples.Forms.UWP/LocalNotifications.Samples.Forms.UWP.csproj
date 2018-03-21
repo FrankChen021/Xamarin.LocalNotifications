@@ -135,14 +135,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LocalNotifications\LocalNotifications.Plugin.Abstractions\LocalNotifications.Plugin.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>LocalNotifications.Plugin.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LocalNotifications\LocalNotifications.Plugin.UWP\LocalNotifications.Plugin.UWP.csproj">
-      <Project>{bfa3f4cf-42c6-4488-8ff3-cbe3fb982f5e}</Project>
-      <Name>LocalNotifications.Plugin.UWP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LocalNotifications.Samples.Forms\LocalNotifications.Samples.Forms.csproj">
       <Project>{0b65c2d9-a170-4c8b-a598-cfab9e38f150}</Project>
       <Name>LocalNotifications.Samples.Forms</Name>

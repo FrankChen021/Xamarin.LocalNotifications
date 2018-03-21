@@ -25,13 +25,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xam.Plugin.LocalNotifications" Version="2.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\LocalNotifications\LocalNotifications.Plugin.Abstractions\LocalNotifications.Plugin.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>LocalNotifications.Plugin.Abstractions</Name>
-    </ProjectReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -104,16 +104,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LocalNotifications\LocalNotifications.Plugin.Abstractions\LocalNotifications.Plugin.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>LocalNotifications.Plugin.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LocalNotifications\LocalNotifications.Plugin.iOSUnified\LocalNotifications.Plugin.iOSUnified.csproj">
-      <Project>{2882aeeb-d4cd-4eb9-8a6c-6653b33681f0}</Project>
-      <Name>LocalNotifications.Plugin.iOSUnified</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
     <ProjectReference Include="..\LocalNotifications.Samples.Forms\LocalNotifications.Samples.Forms.csproj">
       <Name>LocalNotifications.Samples.Forms</Name>
     </ProjectReference>
