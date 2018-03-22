@@ -41,10 +41,12 @@ namespace LocalNotifications.Plugin
             var builder = new Notification.Builder(Application.Context)
                 .SetContentTitle(notification.Title)
                 .SetContentText(notification.Text)
-//                .SetSmallIcon(Resource.Drawable.IcDialogEmail);
-                .SetSmallIcon(Application.Context.ApplicationInfo.Icon);
+                .SetSmallIcon(Application.Context.ApplicationInfo.Icon)
+                .SetAutoCancel(true);
 
             var nativeNotification = builder.Build();
+            nativeNotification.Defaults = NotificationDefaults.Sound | NotificationDefaults.Vibrate;
+
             return nativeNotification;
         }
 
