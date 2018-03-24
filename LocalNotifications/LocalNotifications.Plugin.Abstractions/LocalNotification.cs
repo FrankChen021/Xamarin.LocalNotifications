@@ -30,5 +30,10 @@ namespace LocalNotifications.Plugin.Abstractions
         /// The notify time of notification.
         /// </value>
         public DateTime NotifyTime { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string LaunchURL { get; set; }
     }
 }

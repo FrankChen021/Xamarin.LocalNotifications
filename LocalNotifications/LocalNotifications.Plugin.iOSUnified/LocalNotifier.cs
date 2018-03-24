@@ -28,6 +28,7 @@ namespace LocalNotifications.Plugin
                 AlertBody = notification.Text,
                 FireDate = notification.NotifyTime.ToNSDate(),
                 //ApplicationIconBadgeNumber = 1,
+                 
                 UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(id), NSObject.FromObject(NotificationKey))
             }; ;
 

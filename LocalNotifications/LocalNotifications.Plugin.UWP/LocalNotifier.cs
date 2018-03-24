@@ -18,6 +18,8 @@ namespace LocalNotifications.Plugin
         private IXmlNode titleElem;
         private IXmlNode contentElem;
 
+        public event ActivatedFromNotificationEventHandler ActivateFromNotification;
+
         public LocalNotifier()
         {
             // string toastVisual =
@@ -39,15 +41,12 @@ namespace LocalNotifications.Plugin
             toastXml = new XmlDocument();
             var docElement = toastXml.AppendChild(toastXml.CreateElement("toast"));
             var visualElem = docElement.AppendChild(toastXml.CreateElement("visual"));
-            var bindElem = visualElem.AppendChild(toastXml.CreateElement("binding"));
+            var bindElem = visualElem.AppendChild(toastXml.CreateElement("binding")) as XmlElement;
             {
-                var attrib = toastXml.CreateAttribute("template");
-                attrib.Value = "ToastGeneric";
-                bindElem.Attributes.SetNamedItem(attrib);
+                bindElem.SetAttribute("template", "ToastGeneric");
             }
             titleElem = bindElem.AppendChild(toastXml.CreateElement("text"));
             contentElem = bindElem.AppendChild(toastXml.CreateElement("text"));
-
             notifier = ToastNotificationManager.CreateToastNotifier();
         }
 
@@ -60,12 +59,18 @@ namespace LocalNotifications.Plugin
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/send-local-toast
 
             string id = (staticId++).ToString();
+
+            if (notification.LaunchURL == null)
+                toastXml.DocumentElement.RemoveAttribute("launch");
+            else
+                toastXml.DocumentElement.SetAttribute("launch", notification.LaunchURL);
+
             titleElem.InnerText = notification.Title;
             contentElem.InnerText = notification.Text;
 
             notifier.AddToSchedule(new ScheduledToastNotification(toastXml, notification.NotifyTime)
             {
-                Id = id
+                Id = id,
             });
 
             return id;
@@ -97,6 +102,12 @@ namespace LocalNotifications.Plugin
             {
                 notifier.RemoveFromSchedule(n);
             }
+        }
+
+        public void OnActivated(object parameter)
+        {
+            if (this.ActivateFromNotification != null)
+                this.ActivateFromNotification(parameter);
         }
     }
 }

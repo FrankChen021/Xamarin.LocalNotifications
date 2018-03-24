@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LocalNotifications.Plugin;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,12 +33,22 @@ namespace LocalNotifications.Sample.Forms.UWP
             this.Suspending += OnSuspending;
         }
 
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            Launch(e);
+        }
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            Launch(e);
+        }
+
+        private void Launch(IActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -60,18 +71,32 @@ namespace LocalNotifications.Sample.Forms.UWP
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if ( e is ToastNotificationActivatedEventArgs)
             {
+                var launch = e as ToastNotificationActivatedEventArgs;
                 if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
+                    rootFrame.Navigate(typeof(MainPage));
+
+                if ( !string.IsNullOrEmpty(launch.Argument))
+                    (CrossLocalNotifications.Current as LocalNotifier).OnActivated(launch.Argument);
             }
+            else if (e is LaunchActivatedEventArgs)
+            {
+                var launch = e as LaunchActivatedEventArgs;
+                if (launch.PrelaunchActivated == false)
+                {
+                    if (rootFrame.Content == null)
+                    {
+                        // When the navigation stack isn't restored navigate to the first page,
+                        // configuring the new page by passing required information as a navigation
+                        // parameter
+                        rootFrame.Navigate(typeof(MainPage), launch.Arguments);
+                    }
+                }
+            }
+
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         /// <summary>
