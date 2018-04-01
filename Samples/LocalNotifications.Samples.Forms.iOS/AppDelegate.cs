@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using LocalNotifications.Plugin;
 using UIKit;
 
 namespace LocalNotifications.Samples.Forms.iOS
@@ -28,9 +29,11 @@ namespace LocalNotifications.Samples.Forms.iOS
             var notificationSettings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, null);
             UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
 
+            (CrossLocalNotifications.Current as LocalNotifier).FinishedLaunching(app, options);
+
             return base.FinishedLaunching(app, options);
         }
-
+        
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
             if (application.ApplicationState == UIApplicationState.Active)
@@ -44,6 +47,7 @@ namespace LocalNotifications.Samples.Forms.iOS
                     alert.Show();
                 });
             }
+            (CrossLocalNotifications.Current as LocalNotifier).ActivateFromNotification(application, notification);
         }
     }
 }

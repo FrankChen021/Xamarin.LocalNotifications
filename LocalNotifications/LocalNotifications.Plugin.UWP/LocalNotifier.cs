@@ -18,7 +18,7 @@ namespace LocalNotifications.Plugin
         private IXmlNode titleElem;
         private IXmlNode contentElem;
 
-        public event ActivatedFromNotificationEventHandler ActivateFromNotification;
+        public event ActivatedFromNotificationEventHandler ActivatedFromNotification;
 
         public LocalNotifier()
         {
@@ -106,8 +106,8 @@ namespace LocalNotifications.Plugin
 
         public void OnActivated(object parameter)
         {
-            if (this.ActivateFromNotification != null)
-                this.ActivateFromNotification(parameter);
+            if (this.ActivatedFromNotification != null)
+                this.ActivatedFromNotification(parameter);
         }
     }
 }

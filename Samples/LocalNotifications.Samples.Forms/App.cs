@@ -12,7 +12,7 @@ namespace LocalNotifications.Samples.Forms
     {
         public App()
         {
-            CrossLocalNotifications.Current.ActivateFromNotification += Current_ActivateFromNotification;
+            CrossLocalNotifications.Current.ActivatedFromNotification += Current_ActivateFromNotification;
 
             // The root page of your application
             MainPage = new NavigationPage(new ContentPage

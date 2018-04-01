@@ -16,7 +16,7 @@ namespace LocalNotifications.Plugin.Abstractions
         /// <summary>
         /// 
         /// </summary>
-        event ActivatedFromNotificationEventHandler ActivateFromNotification;
+        event ActivatedFromNotificationEventHandler ActivatedFromNotification;
 
         /// <summary>
         /// Notifies the specified notification.
