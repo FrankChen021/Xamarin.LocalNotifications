@@ -6,7 +6,7 @@ namespace LocalNotifications.Plugin.Abstractions
     /// 
     /// </summary>
     /// <param name="parameter"></param>
-    public delegate void ActivatedFromNotificationEventHandler(object parameter);
+    public delegate void ActivatedFromNotificationEventHandler(string parameter);
 
     /// <summary>
     /// Interface for LocalNotifier

@@ -60,10 +60,10 @@ namespace LocalNotifications.Plugin
 
             string id = (staticId++).ToString();
 
-            if (notification.LaunchURL == null)
+            if (notification.Parameter == null)
                 toastXml.DocumentElement.RemoveAttribute("launch");
             else
-                toastXml.DocumentElement.SetAttribute("launch", notification.LaunchURL);
+                toastXml.DocumentElement.SetAttribute("launch", notification.Parameter);
 
             titleElem.InnerText = notification.Title;
             contentElem.InnerText = notification.Text;
@@ -104,7 +104,7 @@ namespace LocalNotifications.Plugin
             }
         }
 
-        public void OnActivated(object parameter)
+        public void OnActivated(string parameter)
         {
             if (this.ActivatedFromNotification != null)
                 this.ActivatedFromNotification(parameter);

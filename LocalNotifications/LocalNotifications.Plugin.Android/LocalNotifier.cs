@@ -35,7 +35,7 @@ namespace LocalNotifications.Plugin
                 NotifyTime = notification.NotifyTime,
                 Text = notification.Text,
                 Title = notification.Title,
-                LaunchURL = notification.LaunchURL
+                Parameter = notification.Parameter
             });
             intent.PutExtra(ScheduledAlarmHandler.LocalNotificationKey, serializedNotification);
 
@@ -111,7 +111,7 @@ namespace LocalNotifications.Plugin
         /// 
         /// </summary>
         /// <param name="activity"></param>
-        public void ActivateFromNotification(Activity activity)
+        public void OnActivated(Activity activity)
         {
             MainActivityType = activity.GetType();
 

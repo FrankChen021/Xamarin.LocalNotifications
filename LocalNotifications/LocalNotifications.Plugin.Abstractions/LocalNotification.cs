@@ -34,6 +34,6 @@ namespace LocalNotifications.Plugin.Abstractions
         /// <summary>
         /// 
         /// </summary>
-        public string LaunchURL { get; set; }
+        public string Parameter { get; set; }
     }
 }

@@ -39,10 +39,10 @@ namespace LocalNotifications.Plugin
                 .SetSmallIcon(Application.Context.ApplicationInfo.Icon)
                 .SetAutoCancel(true);
 
-            if (!string.IsNullOrEmpty(notification.LaunchURL))
+            if (!string.IsNullOrEmpty(notification.Parameter))
             {
                 var intent = new Intent(Application.Context, (CrossLocalNotifications.Current as LocalNotifier).MainActivityType);
-                intent.PutExtra("launch_param", notification.LaunchURL);
+                intent.PutExtra("launch_param", notification.Parameter);
 
                 builder.SetContentIntent(PendingIntent.GetActivity(
                                         Application.Context,

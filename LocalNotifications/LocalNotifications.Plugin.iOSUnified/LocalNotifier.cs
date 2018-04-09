@@ -37,9 +37,9 @@ namespace LocalNotifications.Plugin
                 //UserInfo = NSDictionary.FromObjectAndKey(NSObject.FromObject(id), NSObject.FromObject(NotificationKey))
             };
 
-            if (!string.IsNullOrEmpty(notification.LaunchURL))
+            if (!string.IsNullOrEmpty(notification.Parameter))
                 nativeNotification.UserInfo = NSDictionary.FromObjectsAndKeys(
-                                                new NSObject[] { NSObject.FromObject(notification.LaunchURL), NSObject.FromObject(id) }, 
+                                                new NSObject[] { NSObject.FromObject(notification.Parameter), NSObject.FromObject(id) }, 
                                                 new NSObject[] { NSObject.FromObject(ArgumentKey), NSObject.FromObject(NotificationKey) }
                                                 );
             else
@@ -82,7 +82,7 @@ namespace LocalNotifications.Plugin
         /// 
         /// </summary>
         /// <param name="parameter"></param>
-        public void OnActivated(object parameter)
+        public void OnActivated(string parameter)
         {
             if (this.ActivatedFromNotification != null)
                 this.ActivatedFromNotification(parameter);
