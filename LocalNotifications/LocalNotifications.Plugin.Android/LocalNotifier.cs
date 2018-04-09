@@ -16,6 +16,11 @@ namespace LocalNotifications.Plugin
         static int staticId;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public event ActivatedFromNotificationEventHandler ActivatedFromNotification;
+
+        /// <summary>
         /// Notifies the specified notification.
         /// </summary>
         /// <param name="notification">The notification.</param>
@@ -24,12 +29,13 @@ namespace LocalNotifications.Plugin
             var id = staticId++;
             var intent = createIntent(id);
 
-            var serializedNotification = serializeNotification(new NativeNotification()
+            var serializedNotification = NativeNotification.Serialize(new NativeNotification()
             {
                 Id = id,
                 NotifyTime = notification.NotifyTime,
                 Text = notification.Text,
-                Title = notification.Title
+                Title = notification.Title,
+                LaunchURL = notification.LaunchURL
             });
             intent.PutExtra(ScheduledAlarmHandler.LocalNotificationKey, serializedNotification);
 
@@ -78,16 +84,6 @@ namespace LocalNotifications.Plugin
             return alarmManager;
         }
 
-        private string serializeNotification(NativeNotification notification)
-        {
-            var xmlSerializer = new XmlSerializer(notification.GetType());
-            using (var stringWriter = new StringWriter())
-            {
-                xmlSerializer.Serialize(stringWriter, notification);
-                return stringWriter.ToString();
-            }
-        }
-
         private long notifyTimeInMilliseconds(DateTime notifyTime)
         {
             //var utcTime = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
@@ -104,6 +100,30 @@ namespace LocalNotifications.Plugin
         public void CancelAll()
         {
             getNotificationManager().CancelAll();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal Type MainActivityType { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="activity"></param>
+        public void ActivateFromNotification(Activity activity)
+        {
+            MainActivityType = activity.GetType();
+
+            if (!activity.Intent.HasExtra("launch_param"))
+                return;
+
+            var param = activity.Intent.GetStringExtra("launch_param");
+            if (string.IsNullOrEmpty(param))
+                return;
+
+            if (this.ActivatedFromNotification != null)
+                this.ActivatedFromNotification(param);
         }
     }
 }

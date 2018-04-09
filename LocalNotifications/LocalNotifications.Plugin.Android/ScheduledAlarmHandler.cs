@@ -25,18 +25,13 @@ namespace LocalNotifications.Plugin
         public override void OnReceive(Context context, Intent intent)
         {
             var extra = intent.GetStringExtra(LocalNotificationKey);
-            var notification = deserializeFromString(extra);
+            var notification = NativeNotification.Deserialize(extra);
 
-            getNotificationManager().Notify(notification.Id, createNativeNotification(notification));
-        }
-
-        private NotificationManager getNotificationManager()
-        {
             var notificationManager = Application.Context.GetSystemService(Context.NotificationService) as NotificationManager;
-            return notificationManager;
+            notificationManager.Notify(notification.Id, CreateAndroidNotification(notification));
         }
 
-        private Notification createNativeNotification(LocalNotification notification)
+        private Notification CreateAndroidNotification(LocalNotification notification)
         {
             var builder = new Notification.Builder(Application.Context)
                 .SetContentTitle(notification.Title)
@@ -44,20 +39,22 @@ namespace LocalNotifications.Plugin
                 .SetSmallIcon(Application.Context.ApplicationInfo.Icon)
                 .SetAutoCancel(true);
 
+            if (!string.IsNullOrEmpty(notification.LaunchURL))
+            {
+                var intent = new Intent(Application.Context, (CrossLocalNotifications.Current as LocalNotifier).MainActivityType);
+                intent.PutExtra("launch_param", notification.LaunchURL);
+
+                builder.SetContentIntent(PendingIntent.GetActivity(
+                                        Application.Context,
+                                        0,
+                                        intent,
+                                        0));
+            }
+
             var nativeNotification = builder.Build();
             nativeNotification.Defaults = NotificationDefaults.Sound | NotificationDefaults.Vibrate;
 
             return nativeNotification;
-        }
-
-        private NativeNotification deserializeFromString(string notificationString)
-        {
-            var xmlSerializer = new XmlSerializer(typeof(NativeNotification));
-            using (var stringReader = new StringReader(notificationString))
-            {
-                var notification = (NativeNotification)xmlSerializer.Deserialize(stringReader);
-                return notification;
-            }
         }
     }
 }

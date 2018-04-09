@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using LocalNotifications.Plugin;
 
 namespace LocalNotifications.Samples.Forms.Droid
 {
@@ -19,6 +20,8 @@ namespace LocalNotifications.Samples.Forms.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new LocalNotifications.Samples.Forms.App());
+
+            (CrossLocalNotifications.Current as LocalNotifier).ActivateFromNotification(this);
         }
     }
 }
