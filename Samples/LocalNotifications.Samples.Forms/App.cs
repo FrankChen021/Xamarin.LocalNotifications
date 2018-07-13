@@ -36,7 +36,7 @@ namespace LocalNotifications.Samples.Forms
                                     {
                                         Title = "Title",
                                         Text = "Text",
-                                        LaunchURL = "text from notification",
+                                        Parameter  = "text from notification",
                                         NotifyTime = DateTime.Now.AddSeconds(5),
                                     });
                               })
@@ -56,7 +56,7 @@ namespace LocalNotifications.Samples.Forms
             });
         }
 
-        private void Current_ActivateFromNotification(object parameter)
+        private void Current_ActivateFromNotification(string parameter)
         {
             Device.BeginInvokeOnMainThread(async () => {
                 if (this.MainPage.Navigation.NavigationStack.Count == 1)

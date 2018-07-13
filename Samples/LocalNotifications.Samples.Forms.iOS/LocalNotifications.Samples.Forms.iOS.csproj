@@ -48,11 +48,11 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignKey>iPhone Developer: sanall.chan@outlook.com (2HJ8YU9PQ5)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>
-    </CodesignProvision>
+    <CodesignProvision>iOS Team Provisioning Profile: com.sbss.safebox.app.ios</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -130,10 +130,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="LocalNotifications.Plugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.0\lib\Xamarin.iOS10\LocalNotifications.Plugin.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.16\lib\Xamarin.iOS10\LocalNotifications.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="LocalNotifications.Plugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.0\lib\Xamarin.iOS10\LocalNotifications.Plugin.Abstractions.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.16\lib\Xamarin.iOS10\LocalNotifications.Plugin.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

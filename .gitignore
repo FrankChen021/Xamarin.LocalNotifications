@@ -184,3 +184,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 /.vs/LocalNotifications/v15/Server/sqlite3
 /Samples/.vs
+/.vs/

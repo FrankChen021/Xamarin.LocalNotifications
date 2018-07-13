@@ -27,8 +27,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,16 +43,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LocalNotifications.Plugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.0\lib\MonoAndroid10\LocalNotifications.Plugin.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.15\lib\MonoAndroid10\LocalNotifications.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="LocalNotifications.Plugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.0\lib\MonoAndroid10\LocalNotifications.Plugin.Abstractions.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugin.LocalNotifications.2.0.0.15\lib\MonoAndroid10\LocalNotifications.Plugin.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
-    <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

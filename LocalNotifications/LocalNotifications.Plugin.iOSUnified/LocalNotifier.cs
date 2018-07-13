@@ -81,16 +81,6 @@ namespace LocalNotifications.Plugin
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parameter"></param>
-        public void OnActivated(string parameter)
-        {
-            if (this.ActivatedFromNotification != null)
-                this.ActivatedFromNotification(parameter);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
         public void FinishedLaunching(UIApplication app, NSDictionary options)
@@ -131,7 +121,7 @@ namespace LocalNotifications.Plugin
         /// </summary>
         /// <param name="application"></param>
         /// <param name="notification"></param>
-        public void ActivateFromNotification(UIApplication application, UILocalNotification notification)
+        public void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
             if (application.ApplicationState == UIApplicationState.Active)
                 return;
