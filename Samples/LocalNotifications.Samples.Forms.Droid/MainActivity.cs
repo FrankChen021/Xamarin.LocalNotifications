@@ -19,7 +19,9 @@ namespace LocalNotifications.Samples.Forms.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
+            LoadApplication(new LocalNotifications.Samples.Forms.App());
+
+            (CrossLocalNotifications.Current as LocalNotifier).OnActivated(this);
         }
     }
 }

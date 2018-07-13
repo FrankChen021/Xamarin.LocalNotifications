@@ -3,7 +3,7 @@ using Foundation;
 
 namespace LocalNotifications.Plugin
 {
-    public static class DateTimeExtensions
+    internal static class DateTimeExtensions
     {
         private static DateTime nsUtcRef = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc); // last zero is milliseconds
 

@@ -3,10 +3,21 @@
 namespace LocalNotifications.Plugin.Abstractions
 {
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="parameter"></param>
+    public delegate void ActivatedFromNotificationEventHandler(string parameter);
+
+    /// <summary>
     /// Interface for LocalNotifier
     /// </summary>
     public interface ILocalNotifier
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        event ActivatedFromNotificationEventHandler ActivatedFromNotification;
+
         /// <summary>
         /// Notifies the specified notification.
         /// </summary>

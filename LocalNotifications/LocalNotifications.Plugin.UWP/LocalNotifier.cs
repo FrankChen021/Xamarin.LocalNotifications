@@ -12,10 +12,13 @@ namespace LocalNotifications.Plugin
     /// </summary>
     public class LocalNotifier : ILocalNotifier
     {
+        static int staticId;
         private ToastNotifier notifier;
         private XmlDocument toastXml;
         private IXmlNode titleElem;
         private IXmlNode contentElem;
+
+        public event ActivatedFromNotificationEventHandler ActivatedFromNotification;
 
         public LocalNotifier()
         {
@@ -38,15 +41,12 @@ namespace LocalNotifications.Plugin
             toastXml = new XmlDocument();
             var docElement = toastXml.AppendChild(toastXml.CreateElement("toast"));
             var visualElem = docElement.AppendChild(toastXml.CreateElement("visual"));
-            var bindElem = visualElem.AppendChild(toastXml.CreateElement("binding"));
+            var bindElem = visualElem.AppendChild(toastXml.CreateElement("binding")) as XmlElement;
             {
-                var attrib = toastXml.CreateAttribute("template");
-                attrib.Value = "ToastGeneric";
-                bindElem.Attributes.SetNamedItem(attrib);
+                bindElem.SetAttribute("template", "ToastGeneric");
             }
             titleElem = bindElem.AppendChild(toastXml.CreateElement("text"));
             contentElem = bindElem.AppendChild(toastXml.CreateElement("text"));
-
             notifier = ToastNotificationManager.CreateToastNotifier();
         }
 
@@ -58,13 +58,19 @@ namespace LocalNotifications.Plugin
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/send-local-toast
 
-            string id = Guid.NewGuid().ToString();
+            string id = (staticId++).ToString();
+
+            if (notification.Parameter == null)
+                toastXml.DocumentElement.RemoveAttribute("launch");
+            else
+                toastXml.DocumentElement.SetAttribute("launch", notification.Parameter);
+
             titleElem.InnerText = notification.Title;
             contentElem.InnerText = notification.Text;
 
             notifier.AddToSchedule(new ScheduledToastNotification(toastXml, notification.NotifyTime)
             {
-                Id = id
+                Id = id,
             });
 
             return id;
@@ -96,6 +102,12 @@ namespace LocalNotifications.Plugin
             {
                 notifier.RemoveFromSchedule(n);
             }
+        }
+
+        public void OnActivated(string parameter)
+        {
+            if (this.ActivatedFromNotification != null)
+                this.ActivatedFromNotification(parameter);
         }
     }
 }

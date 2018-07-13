@@ -30,7 +30,6 @@ namespace LocalNotifications.Samples.Droid
                 {
                     Title = "Title",
                     Text = "Text",
-                    Id = 1,
                     NotifyTime = DateTime.Now.AddSeconds(10),
                 });
 

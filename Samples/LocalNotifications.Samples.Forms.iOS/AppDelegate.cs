@@ -4,7 +4,6 @@ using System.Linq;
 
 using Foundation;
 using LocalNotifications.Plugin;
-using LocalNotifications.Plugin.Abstractions;
 using UIKit;
 
 namespace LocalNotifications.Samples.Forms.iOS
@@ -30,11 +29,25 @@ namespace LocalNotifications.Samples.Forms.iOS
             var notificationSettings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, null);
             UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
 
+            (CrossLocalNotifications.Current as LocalNotifier).FinishedLaunching(app, options);
+
             return base.FinishedLaunching(app, options);
         }
-
+        
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
+            if (application.ApplicationState == UIApplicationState.Active)
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread(() =>
+                {
+                    var alert = new UIAlertView();
+                    alert.Title = "NOTIFICATION RECV";
+                    alert.Message = notification.AlertBody;
+                    alert.AddButton("OK");
+                    alert.Show();
+                });
+            }
+            (CrossLocalNotifications.Current as LocalNotifier).ActivateFromNotification(application, notification);
         }
     }
 }
